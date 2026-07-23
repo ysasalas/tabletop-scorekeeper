@@ -1,2 +1,2 @@
 # tabletop-scorekeeper
-A mobile app for tracking scores across card games with an intuitive and easy-to-use interface.
+A score tracking app designed for multiplayer card games, making it easy to keep score during gameplay.
