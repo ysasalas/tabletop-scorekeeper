@@ -6,6 +6,7 @@ export default function Modal({
   closeOnBackdrop = false,
   hideCloseButton = false,
   overlayDecoration = null,
+  scrollable = true,
   width = "medium"
 }) {
   if (!isOpen) {
@@ -24,7 +25,7 @@ export default function Modal({
       <div className={`modal-stage ${widthClass}`}>
         {overlayDecoration}
         <div
-          className={`modal-card ${widthClass}`}
+          className={`modal-card ${widthClass}${scrollable ? "" : " modal-card--no-scroll"}`}
           onClick={(event) => event.stopPropagation()}
           role="dialog"
           aria-modal="true"

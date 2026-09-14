@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import ScoreInput from "../../components/ScoreInput";
 import ScoreSheet from "../../components/ScoreSheet";
-import { startGame, submitRound } from "../../services/gameLogicService";
+import { startGame, submitRound, updateRound } from "../../services/gameLogicService";
 import { GAME_ID } from "./dutchBlitzService";
 import SetupModal from "./components/SetupModal";
 import StandingsModal from "./components/StandingsModal";
@@ -12,6 +12,7 @@ export default function DutchBlitz() {
   const [gameState, setGameState] = useState(null);
   const [isSetupOpen, setIsSetupOpen] = useState(true);
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
+  const [editingRound, setEditingRound] = useState(null);
   const [isStandingsOpen, setIsStandingsOpen] = useState(false);
   const [isWinnerOpen, setIsWinnerOpen] = useState(false);
   const [error, setError] = useState("");
@@ -46,6 +47,22 @@ export default function DutchBlitz() {
       } else if (events.showStandings) {
         setIsStandingsOpen(true);
       }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleUpdateScores = async (roundScores) => {
+    if (!gameState || !editingRound) {
+      return;
+    }
+
+    try {
+      const { state, events } = await updateRound(GAME_ID, gameState, editingRound.round, roundScores);
+      setGameState(state);
+      setEditingRound(null);
+      setError("");
+      setIsWinnerOpen(Boolean(events.winner));
     } catch (err) {
       setError(err.message);
     }
@@ -94,6 +111,7 @@ export default function DutchBlitz() {
             rounds={gameState.rounds}
             totals={gameState.totals}
             rankings={gameState.rankings}
+            onEditRound={setEditingRound}
           />
 
           {!gameState.isFinished ? (
@@ -126,6 +144,15 @@ export default function DutchBlitz() {
         players={gameState?.players ?? []}
         onSubmit={handleSubmitScores}
         onCancel={() => setIsScoreModalOpen(false)}
+      />
+
+      <ScoreInput
+        isOpen={Boolean(editingRound)}
+        players={gameState?.players ?? []}
+        initialScores={editingRound?.scores ?? {}}
+        title={editingRound ? `Edit Round ${editingRound.round}` : "Edit Scores"}
+        onSubmit={handleUpdateScores}
+        onCancel={() => setEditingRound(null)}
       />
 
       <StandingsModal

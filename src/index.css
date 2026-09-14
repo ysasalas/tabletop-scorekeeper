@@ -131,6 +131,22 @@ select {
   background: var(--green-strong);
 }
 
+.round-edit-button {
+  min-width: 30px;
+  border: 0;
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--blue-strong);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.round-edit-button:hover,
+.round-edit-button:focus-visible {
+  color: var(--attention);
+}
+
 .ghost-button:hover,
 .nav-game-button:hover {
   background: #d4e6f4;
@@ -369,6 +385,11 @@ tfoot th {
   animation: pop-in 220ms ease;
 }
 
+.modal-card--no-scroll {
+  max-height: none;
+  overflow: hidden;
+}
+
 .modal--small {
   max-width: 420px;
 }
@@ -545,6 +566,19 @@ select:focus-visible {
 }
 
 @media (max-width: 720px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-card {
+    max-height: calc(100svh - 24px);
+  }
+
+  .modal-header,
+  .modal-content {
+    padding: 14px;
+  }
+
   .app-nav {
     align-items: flex-start;
     flex-direction: column;

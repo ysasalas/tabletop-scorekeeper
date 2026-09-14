@@ -71,7 +71,7 @@ export default function SetupModal({ isOpen, initialConfig, onStartGame }) {
   };
 
   return (
-    <Modal isOpen={isOpen} title="Dutch Blitz Setup" onClose={null} width="large">
+    <Modal isOpen={isOpen} title="Dutch Blitz Setup" onClose={null} width="medium">
       <form className="stack gap-12" onSubmit={handleSubmit}>
         <label className="field">
           <span>Number of Players</span>

@@ -1,16 +1,23 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "./Modal";
 
-export default function ScoreInput({ isOpen, players, onSubmit, onCancel }) {
+export default function ScoreInput({ isOpen, players, initialScores = {}, onSubmit, onCancel, title = "Add Scores" }) {
   const [values, setValues] = useState({});
   const [error, setError] = useState("");
 
-  const initialValues = useMemo(
+  const emptyValues = useMemo(
     () => players.reduce((acc, player) => ({ ...acc, [player]: "" }), {}),
     [players]
   );
 
-  const safeValues = Object.keys(values).length > 0 ? values : initialValues;
+  useEffect(() => {
+    if (isOpen) {
+      setValues({ ...emptyValues, ...initialScores });
+      setError("");
+    }
+  }, [isOpen, emptyValues]);
+
+  const safeValues = Object.keys(values).length > 0 ? values : emptyValues;
 
   const handleChange = (player, nextValue) => {
     setValues((current) => ({ ...current, [player]: nextValue }));
@@ -20,7 +27,7 @@ export default function ScoreInput({ isOpen, players, onSubmit, onCancel }) {
   };
 
   const handleCancel = () => {
-    setValues(initialValues);
+    setValues(emptyValues);
     setError("");
     onCancel();
   };
@@ -47,11 +54,11 @@ export default function ScoreInput({ isOpen, players, onSubmit, onCancel }) {
     }
 
     onSubmit(parsedScores);
-    setValues(initialValues);
+    setValues(emptyValues);
   };
 
   return (
-    <Modal isOpen={isOpen} title="Add Scores" onClose={handleCancel} hideCloseButton width="small">
+    <Modal isOpen={isOpen} title={title} onClose={handleCancel} hideCloseButton width="small">
       <form className="stack gap-12" onSubmit={handleSubmit}>
         {players.map((player) => (
           <label key={player} className="field">

@@ -21,3 +21,8 @@ export async function submitRound(gameId, currentState, roundScores) {
   const logic = getGameLogic(gameId);
   return await Promise.resolve(logic.submitRound(currentState, roundScores));
 }
+
+export async function updateRound(gameId, currentState, roundNumber, roundScores) {
+  const logic = getGameLogic(gameId);
+  return await Promise.resolve(logic.updateRound(currentState, roundNumber, roundScores));
+}

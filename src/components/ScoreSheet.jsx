@@ -1,4 +1,4 @@
-export default function ScoreSheet({ players, rounds, totals, rankings }) {
+export default function ScoreSheet({ players, rounds, totals, rankings, onEditRound }) {
   return (
     <section className="score-sheet">
       <div className="sheet-header">
@@ -25,7 +25,16 @@ export default function ScoreSheet({ players, rounds, totals, rankings }) {
             ) : (
               rounds.map((roundEntry) => (
                 <tr key={`round-${roundEntry.round}`}>
-                  <td>{roundEntry.round}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="round-edit-button"
+                      onClick={() => onEditRound?.(roundEntry)}
+                      aria-label={`Edit round ${roundEntry.round}`}
+                    >
+                      {roundEntry.round}
+                    </button>
+                  </td>
                   {players.map((player) => (
                     <td key={`${roundEntry.round}-${player}`}>{roundEntry.scores[player]}</td>
                   ))}

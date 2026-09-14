@@ -41,7 +41,7 @@ export default function App() {
         )}
       </main>
 
-      <Modal isOpen={isSelectorOpen} title="Select a Game" onClose={null} width="large">
+      <Modal isOpen={isSelectorOpen} title="Select a Game" onClose={null} scrollable={false} width="medium">
         <GameSelector games={gameRegistry} onSelectGame={handleSelectGame} />
       </Modal>
     </div>

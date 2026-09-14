@@ -134,6 +134,36 @@ function submitRoundLocal(currentState, roundScores) {
   };
 }
 
+function updateRoundLocal(currentState, roundNumber, roundScores) {
+  if (!currentState) {
+    throw new Error("A game must be started before editing scores.");
+  }
+
+  const targetRound = Number(roundNumber);
+  if (!Number.isInteger(targetRound) || targetRound < 1 || targetRound > currentState.rounds.length) {
+    throw new Error("Select a recorded round to edit.");
+  }
+
+  const updatedRounds = currentState.rounds.map((roundEntry) => (
+    roundEntry.round === targetRound ? { ...roundEntry, scores: roundScores } : roundEntry
+  ));
+  const replayedState = startGameLocal(currentState);
+
+  let nextState = replayedState;
+  for (const roundEntry of updatedRounds) {
+    nextState = submitRoundLocal(nextState, roundEntry.scores).state;
+  }
+
+  return {
+    state: nextState,
+    events: {
+      showStandings: false,
+      standings: nextState.rankings,
+      winner: nextState.winner
+    }
+  };
+}
+
 function createPythonApiLogic(baseUrl) {
   return {
     async startGame(config) {
@@ -175,7 +205,8 @@ function createPythonApiLogic(baseUrl) {
 
 const localDutchBlitzLogic = {
   startGame: startGameLocal,
-  submitRound: submitRoundLocal
+  submitRound: submitRoundLocal,
+  updateRound: updateRoundLocal
 };
 
 const provider = import.meta.env.VITE_DUTCH_BLITZ_LOGIC_PROVIDER ?? "local";
