@@ -1,6 +1,10 @@
 # tabletop-scorekeeper
 A score tracking app designed for multiplayer card games, making it easy to keep score during gameplay.
 
+## Live App
+
+Use the deployed app at [ysasalas.github.io/tabletop-scorekeeper](https://ysasalas.github.io/tabletop-scorekeeper/).
+
 ## Run the App
 
 1. Install dependencies:
@@ -14,6 +18,10 @@ A score tracking app designed for multiplayer card games, making it easy to keep
 3. Build for production:
 
 	npm run build
+
+## Deployment
+
+The app is deployed to GitHub Pages from the `main` branch using the workflow in `.github/workflows/deploy-pages.yml`. Each push to `main` builds the Vite app and publishes the contents of `dist/`.
 
 ## Current Games
 
@@ -45,3 +53,12 @@ Optional env vars:
 
 - `VITE_DUTCH_BLITZ_LOGIC_PROVIDER` (`local` or `python-api`)
 - `VITE_DUTCH_BLITZ_API_BASE_URL` (default: `http://localhost:8000`)
+
+## Releases
+
+Releases are tagged in Git with the `v<major>.<minor>.<patch>` format. For example:
+
+```powershell
+git tag v1.1.0
+git push origin v1.1.0
+```
